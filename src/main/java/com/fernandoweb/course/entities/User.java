@@ -3,12 +3,22 @@ package com.fernandoweb.course.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "tb_user")  // Expecifica o nome da tabela como tb_user para efitar conflito com a palavra user restrita
 public class User implements Serializable{   // O Serializable faz o objeto ser uma cadeia de bits para trafegar em rede ou gravar.
 	
 	// Numero de serie para implementação do Serializable
 	private static final long serialVersionUID = 1L;
 	
 	// Variaveis 
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
 	private String email;
