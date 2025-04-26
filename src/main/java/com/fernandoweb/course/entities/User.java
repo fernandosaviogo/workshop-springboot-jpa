@@ -1,12 +1,15 @@
 package com.fernandoweb.course.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -24,6 +27,11 @@ public class User implements Serializable{   // O Serializable faz o objeto ser 
 	private String email;
 	private String phone;
 	private String password;
+	
+	// Faz a implantação de varias ordens para um usuário (forma de lista)
+	@OneToMany(mappedBy = "client")  // Transforma em chave extrangeira de 01 para muitos no banco
+	private List<Order> orders = new ArrayList<>();
+	
 	
 	// Constrautor vazio
 	public User() {
@@ -81,6 +89,11 @@ public class User implements Serializable{   // O Serializable faz o objeto ser 
 		this.password = password;
 	}
 	
+	// Get Order correspondente a lista de orders acima na classe
+	public List<Order> getOrders() {
+		return orders;
+	}
+	
 	// Metodo hashCode
 	@Override
 	public int hashCode() {
@@ -99,5 +112,6 @@ public class User implements Serializable{   // O Serializable faz o objeto ser 
 		User other = (User) obj;
 		return Objects.equals(id, other.id);
 	}
-		
+
+	
 }
