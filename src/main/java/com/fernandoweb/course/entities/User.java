@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,6 +31,7 @@ public class User implements Serializable{   // O Serializable faz o objeto ser 
 	private String password;
 	
 	// Faz a implantação de varias ordens para um usuário (forma de lista)
+	@JsonIgnore  // Faz com que o programa não fique em loop quando um cliente chamar um pedido
 	@OneToMany(mappedBy = "client")  // Transforma em chave extrangeira de 01 para muitos no banco
 	private List<Order> orders = new ArrayList<>();
 	
