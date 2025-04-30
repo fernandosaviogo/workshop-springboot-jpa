@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.fernandoweb.course.entities.User;
 import com.fernandoweb.course.repositories.UserRepository;
+import com.fernandoweb.course.services.exceptions.ResourceNotFoundException;
 
 @Service // Registra um serviço na camada de serviço
 public class UserService {
@@ -20,10 +21,8 @@ public class UserService {
 	}
 	
 	public User findById(Long id) {  // Retorna um usuário pelo ID
-		
 		Optional<User> obj =  repository.findById(id);
-		return obj.get();
-		
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));   //orElseThrow faz a tentativa de GET se não encontrar dados lança a exceção descrita nos parenteses
 	}
 	
 	public User insert(User obj) {   // Insere no banco de dados de um novo objeto do tipo User
