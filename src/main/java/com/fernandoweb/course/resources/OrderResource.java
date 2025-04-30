@@ -27,7 +27,7 @@ public class OrderResource {
 	}
 	
 	// End Point para buscar um usuário por id na URL
-	@GetMapping(value = "/{id}") // Requisição vai aceitar um id dentro da URL para retornar um usuário
+	@GetMapping(value = "/{id}") // Requisição vai aceitar um id dentro na URL para retornar um usuário
 	public ResponseEntity<Order> findById(@PathVariable Long id) {
 		Order obj = service.findById(id);
 		return ResponseEntity.ok().body(obj);
