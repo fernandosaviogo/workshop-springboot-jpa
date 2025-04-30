@@ -26,12 +26,25 @@ public class UserService {
 		
 	}
 	
-	public User insert(User obj) {   // Insere no banco de dados um novo objeto do tipo User
+	public User insert(User obj) {   // Insere no banco de dados de um novo objeto do tipo User
 		return repository.save(obj);
 	}
 	
-	public void delete(Long id) {
+	public void delete(Long id) {  // Deleta um usuário do banco de dados
 		repository.deleteById(id);
+	}
+	
+	// Faz um update não dados do usuário (AS duas classes abaixo)
+	public User update(Long id, User obj) {
+		User entity = repository.getReferenceById(id);   // Vai monitorar o objeto no JPA e depois que vai ser trabalhado no banco de dados
+		updateData(entity, obj);
+		return repository.save(entity);
+	}
+
+	private void updateData(User entity, User obj) {  // Não atualiza todos os campos do usuário
+		entity.setName(obj.getName());
+		entity.setEmail(obj.getEmail());
+		entity.setPhone(obj.getPhone());
 	}
 
 }
