@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.fernandoweb.course.services.exceptions.DatabaseException;
 import com.fernandoweb.course.services.exceptions.ResourceNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,5 +22,12 @@ public class ResourceExceptionHandler {
 		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
 		return ResponseEntity.status(status).body(err);
 	}
-
+	
+	@ExceptionHandler(DatabaseException.class)   //  A anotetion intercepta qualquer exceção do tipo ResourceNotFoundException
+	public ResponseEntity<StandardError> database(DatabaseException e, HttpServletRequest request) {
+		String error = "Database error";
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(), request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+	}
 }

@@ -4,10 +4,13 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.fernandoweb.course.entities.User;
 import com.fernandoweb.course.repositories.UserRepository;
+import com.fernandoweb.course.services.exceptions.DatabaseException;
 import com.fernandoweb.course.services.exceptions.ResourceNotFoundException;
 
 @Service // Registra um serviço na camada de serviço
@@ -29,8 +32,15 @@ public class UserService {
 		return repository.save(obj);
 	}
 	
-	public void delete(Long id) {  // Deleta um usuário do banco de dados
-		repository.deleteById(id);
+	// Deleta um usuário do banco de dados
+	public void delete(Long id) {  
+		try {
+			repository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			throw new ResourceNotFoundException(id);
+		} catch (DataIntegrityViolationException e) {
+			throw new DatabaseException(e.getMessage());
+		}
 	}
 	
 	// Faz um update não dados do usuário (AS duas classes abaixo)
