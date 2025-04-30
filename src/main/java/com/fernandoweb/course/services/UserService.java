@@ -13,6 +13,8 @@ import com.fernandoweb.course.repositories.UserRepository;
 import com.fernandoweb.course.services.exceptions.DatabaseException;
 import com.fernandoweb.course.services.exceptions.ResourceNotFoundException;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service // Registra um serviço na camada de serviço
 public class UserService {
 	
@@ -45,9 +47,13 @@ public class UserService {
 	
 	// Faz um update não dados do usuário (AS duas classes abaixo)
 	public User update(Long id, User obj) {
-		User entity = repository.getReferenceById(id);   // Vai monitorar o objeto no JPA e depois que vai ser trabalhado no banco de dados
-		updateData(entity, obj);
-		return repository.save(entity);
+		try {
+			User entity = repository.getReferenceById(id);   // Vai monitorar o objeto no JPA e depois que vai ser trabalhado no banco de dados
+			updateData(entity, obj);
+			return repository.save(entity);
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException(id);
+		}
 	}
 
 	private void updateData(User entity, User obj) {  // Não atualiza todos os campos do usuário
